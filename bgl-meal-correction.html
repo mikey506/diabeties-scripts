@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>calc</title>
+<script>
+function calc(){
+var bg=document.getElementById('bg').value;
+var carbs=document.getElementById('carbs').value;
+var correct=((bg - 10) / 16);
+var carbcorrect= carbs / 20;
+var units= correct + carbcorrect;
+document.getElementById('result').innerHTML=units;
+document.getElementById('result2').innerHTML=correct;
+document.getElementById('result3').innerHTML=carbcorrect;
+return false
+}
+</script>
+</head>
+<body>
+<form>
+<p>Blood Sugar <input type="text" id="bg"/></p>
+<p>Carb Target <input type="text" id="carbs" /></p>
+<input type="button" onClick="calc()" value="Calcular" />
+</form>
+<br><br>Correction:<b> <div id="result2"></div> </b>
+<br>Carb Correction:<b> <div id="result3"></div></b><br><br>
+Give This Many Units of insulin:<b> <div id="result"></div> </b>
+</body>
+</html>
