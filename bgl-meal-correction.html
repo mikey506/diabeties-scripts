@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <title>BGL Correction & Meal Calculations Script</title>
 <script>
+
 function calc(){
 var bg=document.getElementById('bg').value;
 var carbs=document.getElementById('carbs').value;
@@ -10,23 +11,38 @@ var correction=document.getElementById('correction').value;
 var target=document.getElementById('target').value;
 var carbratio=document.getElementById('carbratio').value;
 
-var correct=((bg - target) / correction); 
+ 
 // the 16 is correction factor and 10 is is BG target this can be changed as needed:
 // For adults 5-8 BGL is a good range to have blood sugar levels:
 // Change the range (10) and correction factor of (16) as needed
 // carbratio can be adjusted to suit needs
 
 var carbcorrect= carbs / carbratio;
+
+if (bg < 10) {
+  var bg=10;
+}
+// This here is a feature that endo wanted, any BGL below 10 would leave that calculation out
+// when adding up the total amount for units. Without this correction would be negative which
+// we were told to avoid working with.
+
+var correct=((bg - target) / correction);
+
 var units= correct + carbcorrect;
+
 document.getElementById('result').innerHTML=units;
 document.getElementById('result2').innerHTML=correct;
+document.getElementById('result2').innerHTML=target;
 document.getElementById('result3').innerHTML=carbcorrect;
 
 return false
 }
 </script>
 </head>
-<body><center><br><br><br><br><br>
+<body><center><br><br>
+Correction Formula: (BGL-10) / 16 = _____<br>
+Carb Formula: (Carbs) / 20 = ______<br>
+<br><br><br>
 <form>
 <p>Correction Factor <input type="text" id="correction" value="16"></p>
 <p>Blood Sugar Target <input type="text" id="target" value="10"></p>
