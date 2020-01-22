@@ -1,3 +1,7 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<body>
 <?php 
   $content = $_POST['total'];
   $contstr = strlen($content); 
@@ -8,4 +12,8 @@
     print('<a href="http://bbsn.ca/BGLLog.html"> View Entries </a><br><a href="http://bbsn.ca/bglcalc.html"> Go Back </a>');
 }
 ?>
+</body>
+</head>
+</html>
+
 
