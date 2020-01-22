@@ -188,7 +188,8 @@ function addText(event) {
 			
 		</script>
 
-Meal/Correction Info:<br> <textarea rows = "8" cols = "60" id="mealinfo" name = "description">No Meal Info  </textarea><br></p>
+	<br><br><b>--==Meal/Correction Info==--</b><br> 
+	<textarea rows = "8" cols = "60" id="mealinfo" name = "description"></textarea><br></p>
 <br></p>
 </form>
 
