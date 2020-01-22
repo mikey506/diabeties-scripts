@@ -100,9 +100,9 @@ $LOGIN_INFORMATION = array(
 
 $LOGIN_INFORMATION = array(
 
-  'ABC123',
+  '123ABC',
 
-  'Mikester3',
+  'BkkUpPass',
 
 );
 
