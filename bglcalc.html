@@ -1,8 +1,15 @@
 <html>
 <head>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BGL Correction & Meal Calculations + Entry Logger (Serverside) </title>
+<title>BGL Correction & Meal Calculations + Entrty Logger (Serverside) </title>
 <script>
 
 function calc(){
@@ -31,10 +38,14 @@ if (bg < 10) {
 }
 var units= correct + carbcorrect;
 		
+var formulas= '(BG) - ' + target + ' / ' + correction + ' = _____ <br> (Carbs) / ' + carbratio + ' = _______ </b>';
 document.getElementById('result').innerHTML=units;
 document.getElementById('result2').innerHTML=correct;
 document.getElementById('result3').innerHTML=carbcorrect;
 document.getElementById('result4').innerHTML=mealinfostr;
+document.getElementById('result5').innerHTML=bg;
+document.getElementById('result6').innerHTML=formulas;
+
 return false
 }
 
@@ -51,35 +62,55 @@ var correct=((bg - target) / correction);
   var total = correct + carbcorrect + units;
   var element = document.getElementById("total");
   var theDate = new Date();
-  element.value = '<font size="1"><br>Date: <b>' + theDate + '</b> / Carbs Given: <b>' +  carbs + '</b> / BG Correct:<b> ' + correct + '</b> / CarbCorrect:<b> ' + carbcorrect + '</b> / Total Units:<b> ' + units + '</b> / Meal info: <b>' + mealinfostr + '</b><br></font>';
+  element.value = '<font size="1"><br>Date: <b>' + theDate + '</b> / BG Reading:<b> ' + bg + ' </b> / Carbs Given: <b>' +  carbs + '</b> / BG Correct:<b> ' + correct + '</b> / CarbCorrect:<b> ' + carbcorrect + '</b> / Total Units:<b> ' + units + '</b> / Meal info: <b>' + mealinfostr + '</b><br></font>';
   element.form.submit();
 }
 </script>
 
 </head>
 <body><center><br><br>
-Correction Formula: (BGL-10) / 16 = _____<br>
-Carb Formula: (Carbs) / 20 = ______<br>
-<br><br><br>
 <form>
 <input type="hidden" name="output" value="">
-<p>BGL Correct  <input type="text" id="correction" value="16"></p>
-<p>BGL Target <input type="text" id="target" value="10"></p>
-<p>Carb Ratio <input type="text" id="carbratio" value="20"></p>
-<p>BG Reading <input type="text" id="bg"/></p>
-<p>Carb Target <input type="text" id="carbs" /></p>
-<p>Meal Info <input type="text" id="mealinfo" value="No Meal Info" maxlength="200" size="40"></p>
+<p>BGL Correct  <input type="text" id="correction" value="16" size="4"></p>
+<p>BGL Target <input type="text" id="target" value="10" size="4"></p>
+<p>Carb Ratio <input type="text" id="carbratio" value="20" size="4"></p>
+<p>BG Reading <input type="text" id="bg" size="4"/></p>
+<p>Carb Target <input type="text" id="carbs" size="4"/></p>
+<p>Meal Info:<br> <textarea rows = "8" cols = "60" id="mealinfo" name = "description">No Meal Info  </textarea><br></p>
 </form>
 
 <form action="bglpost.php" method="post">
+
 <input type="hidden" name="total" id="total">
 <input type="button" onClick="calc()" value="Calculate" />
 <input type="button" onClick="setValue()" value="LogEntry" />
 </form>
-
-<br><br>BGL Correction:<b> <div id="result2"></div> </b><br>
-<br>Carb Correction:<b> <div id="result3"></div></b><br><br>
-<br>Units of insulin:<b> <div id="result"></div> </b>
-<br>Meal Info: <b> <div id="result4"></div></b><br>
-</center></body>
+ <table style="width:70%">
+  <tr>
+    <th>BG Reading</th>
+    <th>BGL Correction</th>
+    <th>Carb Correction</th>
+    <th>Units of insulin</th>
+  </tr>
+  <tr>
+    <td><center><b> <div id="result5"></div> </b></center></td>
+    <td><center><b> <div id="result2"></div> </b></center></td>
+    <td><center><b> <div id="result3"></div></b></center></td>
+    <td><center><b> <div id="result"></div></b></center></td>
+  </center></tr>
+</table> 
+<table style="width:70%">
+ <tr>
+   <th>--==Formula Info==--<br> <b></th>
+ </tr>
+<tr><td>
+ <center><div id="result6"></div></b></center></td>
+ </tr>
+</table>
+<table><tr>
+  <th></b> --==Meal/Correction Info==-- </th>
+</tr>
+<tr><td><b><center> <div id="result4"></div></b></center></td></tr>
+</table>
+</body>
 </html>
