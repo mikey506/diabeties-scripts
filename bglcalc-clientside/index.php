@@ -1,8 +1,16 @@
 
 <html>
 <head>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
 <meta charset="utf-8">
-<title>BGL Correction & Meal Calculations Script</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BGL Correction & Meal Calculations (ClientSide) </title>
 <script>
 
 function calc(){
