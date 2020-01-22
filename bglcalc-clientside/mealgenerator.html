@@ -1,0 +1,137 @@
+    <!DOCTYPE html>
+    <html>   
+    <body>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+function showhide(id) {
+       	var e = document.getElementById(id);
+       	e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+     }
+    </script>
+
+	<script>
+
+			function GetSelectedValue(){
+				var e = document.getElementById("country");
+				var result = e.options[e.selectedIndex].value;
+				
+				document.getElementById("result").innerHTML = result;
+			}
+
+			function GetSelectedText(){
+				var e = document.getElementById("country");
+				var result = e.options[e.selectedIndex].text;
+				
+				document.getElementById("result").innerHTML = result;
+			}
+function addText(event) {
+    var targ = event.target || event.srcElement;
+    document.getElementById("mealinfo").value += targ.textContent || targ.innerText;
+}
+function copy() {
+  let textarea = document.getElementById("mealinfo");
+  textarea.select();
+  document.execCommand("copy");
+}			
+		</script>
+    	<a href="javascript:showhide('uniquename')">
+    		Click to show/hide.
+    	</a>
+    
+    	<div id="uniquename" style="display:none;">
+    		<p>
+<table style="width:70%">
+  <tr>
+    <th>Simple Sugar Food</th>
+    <th>Complex Carb Food</th>
+  </tr>
+  <tr>
+    <td><ol onclick="addText(event)">
+      <li>Rocket Candies </li>
+      <li>Juice </li>
+      <li>Orange Slices </li>
+      <li>Apple Slices </li>
+      <li>Cookie </li>
+      </ol>
+    </td>
+    <td>
+      <ol onclick="addText(event)">
+      <li>Crackers </li>
+      <li>Bread Slice  </li>
+      <li>Chips </li>
+      <li> </li>
+      <li> </li>
+      </ol>
+    </td>
+</tr>
+</table>
+<table  style="width:70%">
+<tr>
+    <th>Simple & Complex Carb Food</th>
+    <th>Low Carb Foods</th>
+  </tr>
+  <tr>
+    <td>
+      <ol onclick="addText(event)">
+        <li>Cookies </li>
+        <li>Nutragrain Bar  </li>
+        <li> </li>
+        <li> </li>
+        <li> </li>
+      </ol>
+    </td>
+    <td>     
+      <ol onclick="addText(event)">
+        <li>Cucomber </li>
+        <li>Cherry Tomatoes  </li>
+        <li>Sunflower Seeds </li>
+        <li>Celary </li>
+      </ol>
+    </td>
+  </tr>
+</table> 
+
+<table style="width:70%">
+  <tr>
+    <th>Carb amounts</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <td>
+      <ol onclick="addText(event)">
+        <li>(1-2g Carbs) /</li>
+        <li>(5g Carbs) /</li>
+        <li>(7g Carbs) /</li>
+      </td>
+        <td>
+        <ol onclick="addText(event)">
+        <li>(10g Carbs) / </li>
+        <li>(12g Carbs) / </li>
+        <li>(15g Carbs) /</li>
+      </td>
+        <td>
+        <ol onclick="addText(event)">
+        <li>(17g Carbs) / </li>
+        <li>(20g Carbs) / </li>
+        <li>(20+g Carbs) /</li>
+      </td>
+    </ol>
+  </td>
+</tr>
+</table>
+<br><b>--==Meal Generator==--</b>
+<button onclick="copy()">Copy</button><br> 
+	<textarea rows = "8" cols = "60" id="mealinfo" name = "description"></textarea><br></p>
+</p>
+    	</div>
+    
+    </body>
+    </html>
