@@ -1,8 +1,8 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>BGL Correction & Meal Calculations + Log Entry Script</title>
-<script src="/cdn-cgi/apps/head/HnqZpFDHWMg4OK576GCBR4sYO24.js"></script><script>
+<title>BGL Correction & Meal Calculations Script</title>
+<script>
 
 function calc(){
 var bg=document.getElementById('bg').value;
@@ -48,15 +48,15 @@ var correct=((bg - target) / correction);
   var total = correct + carbcorrect + units;
   var element = document.getElementById("total");
   var theDate = new Date();
-  element.value = 'Date: ' + theDate + ' / Carbs Given: ' +  carbs + ' / BG Correct: ' + correct + ' / CarbCorrect: ' + carbcorrect + ' / Total Units: ' + units;
+  element.value = '<br>Date: <b>' + theDate + '</b> / Carbs Given: <b>' +  carbs + '</b> / BG Correct:<b> ' + correct + '</b> / CarbCorrect:<b> ' + carbcorrect + '</b> / Total Units:<b> ' + units + '</b>';
   element.form.submit();
 }
 </script>
 
 </head>
 <body><center><br><br>
-	Correction Formula: <b>(BGL-10) / 16 = _____</b><br>
-	Carb Formula: <b>(Carbs) / 20 = ______</b><br>
+Correction Formula: (BGL-10) / 16 = _____<br>
+Carb Formula: (Carbs) / 20 = ______<br>
 <br><br><br>
 <form>
 <input type="hidden" name="output" value="">
@@ -67,7 +67,7 @@ var correct=((bg - target) / correction);
 <p>Carb Target <input type="text" id="carbs" /></p>
 </form>
 
-<form action="bglentry.php" method="post">
+<form action="bglpost.php" method="post">
 <input type="hidden" name="total" id="total">
 <input type="button" onClick="calc()" value="Calculate" />
 <input type="button" onClick="setValue()" value="LogEntry" />
