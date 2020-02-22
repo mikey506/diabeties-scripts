@@ -12,19 +12,19 @@ table, th, td {
 <title>BGL Correction & Meal Calculations (ClientSide) </title>
 <script>
 function calc(){
-var bg=document.getElementById('bg').value;
-var carbs=document.getElementById('carbs').value;
-var correction=document.getElementById('correction').value;
-var target=document.getElementById('target').value;
-var carbratio=document.getElementById('carbratio').value;
-var mealinfostr=document.getElementById('mealinfo').value;
+  var bg=document.getElementById('bg').value;
+  var carbs=document.getElementById('carbs').value;
+  var correction=document.getElementById('correction').value;
+  var target=document.getElementById('target').value;
+  var carbratio=document.getElementById('carbratio').value;
+  var mealinfostr=document.getElementById('mealinfo').value;
 
 // the 16 is correction factor and 10 is is BG target this can be changed as needed:
 // For adults 5-8 BGL is a good range to have blood sugar levels:
 // Change the range (10) and correction factor of (16) as needed
-// carbratio can be adjusted to suit needs
+// carbratio can be adjusted to suit needs.
 
-var carbcorrect= carbs / carbratio;
+  var carbcorrect= carbs / carbratio;
 
 // This here is a feature that endo wanted, any BGL below 10 would leave that calculation out
 // when adding up the total amount for units. Without this correction would be negative which
@@ -32,55 +32,51 @@ var carbcorrect= carbs / carbratio;
 
 var correct=((bg - target) / correction);
 
-if (bg < 10) { 
-  var correct=0; 
-}
-var units= correct + carbcorrect;
-var formulas= '(BG) - ' + target + ' / ' + correction + ' = _____ <br> (Carbs) / ' + carbratio + ' = _______ </b>';
-document.getElementById('result').innerHTML=units;
-document.getElementById('result2').innerHTML=correct;
-document.getElementById('result3').innerHTML=carbcorrect;
-document.getElementById('result4').innerHTML=mealinfostr;
-document.getElementById('result5').innerHTML=bg;
-document.getElementById('result6').innerHTML=formulas;
-return false
+// this if statement voids correction if below BG target.
+  if (bg < target) { 
+    var correct=0; 
+  }
+
+  var units= correct + carbcorrect;
+  var formulas= '(BG) - ' + target + ' / ' + correction + ' = _____ <br> (Carbs) / ' + carbratio + ' = _______ </b>';
+  document.getElementById('result').innerHTML=units;
+  document.getElementById('result2').innerHTML=correct;
+  document.getElementById('result3').innerHTML=carbcorrect;
+  document.getElementById('result4').innerHTML=mealinfostr;
+  document.getElementById('result5').innerHTML=bg;
+  document.getElementById('result6').innerHTML=formulas;
+  return false
 }
 </script>
 </head>
-  <body><center><br><br>
+<body><center><br><br>
 <form>
 <input type="hidden" name="output" value="">
 <p>BGL Correct  <input type="text" id="correction" value="16" size="2"><br>
 BGL Target <input type="text" id="target" value="10" size="2"><br>
 Carb Ratio <input type="text" id="carbratio" value="17" size="2"><br><br>
-
 BG Reading <input type="text" id="bg" size="2"/><br>
 Carb Target <input type="text" id="carbs" size="2"/><br><br><br>
 
-
-	<script>
-
-			function GetSelectedValue(){
-				var e = document.getElementById("country");
-				var result = e.options[e.selectedIndex].value;
-				
-				document.getElementById("result").innerHTML = result;
-			}
-
-			function GetSelectedText(){
-				var e = document.getElementById("country");
-				var result = e.options[e.selectedIndex].text;
-				
-				document.getElementById("result").innerHTML = result;
-			}
-function addText(event) {
-    var targ = event.target || event.srcElement;
-    document.getElementById("mealinfo").value += targ.textContent || targ.innerText;
+<script>
+function GetSelectedValue(){
+  var e = document.getElementById("country");
+  var result = e.options[e.selectedIndex].value;
+  document.getElementById("result").innerHTML = result;
 }
-			
-		</script>
+function GetSelectedText(){
+  varr e = document.getElementById("country");
+  var result = e.options[e.selectedIndex].text;				
+  document.getElementById("result").innerHTML = result;
+}
+  function addText(event) {
+  var targ = event.target || event.srcElement;
+  document.getElementById("mealinfo").value += targ.textContent || targ.innerText;
+}
+</script>
+
 <br><br><b>--==Meal/Correction Info==--</b><br> 
-	<textarea rows = "8" cols = "60" id="mealinfo" name = "description"></textarea><br></p>
+<textarea rows = "8" cols = "60" id="mealinfo" name = "description"></textarea><br></p>
 <br></p>
 </form>
 
