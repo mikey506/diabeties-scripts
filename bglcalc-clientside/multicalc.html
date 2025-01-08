@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Purpose Health Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .popup {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 100%;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        table {
+            margin: 20px 0;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 600px) {
+            input, textarea, button {
+                width: 90%;
+            }
+
+            th, td {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multi-Purpose Health Tools</h1>
+
+        <h2>Diabetic Risk Score Calculator</h2>
+        <form id="diabeticForm">
+            <div class="form-group">
+                <label for="age">Age (years)</label>
+                <input type="number" id="age" name="age" required 
+                       onmouseover="showPopup(this)" onmouseout="hidePopup(this)">
+                <div class="popup">Age is a significant factor in assessing diabetic risk. The likelihood of developing diabetes often increases with age.</div>
+            </div>
+            <div class="form-group">
+                <label for="bmi">BMI</label>
+                <input type="number" id="bmi" name="bmi" required 
+                       onmouseover="showPopup(this)" onmouseout="hidePopup(this)">
+                <div class="popup">BMI is a critical measure of body fat relative to height and weight, and impacts diabetic risk significantly.</div>
+            </div>
+            <div class="form-group">
+                <label for="fastingGlucose">Fasting Glucose (mg/dL)</label>
+                <input type="number" id="fastingGlucose" name="fastingGlucose" required 
+                       onmouseover="showPopup(this)" onmouseout="hidePopup(this)">
+                <div class="popup">Fasting glucose measures blood sugar levels after fasting. Values above 100 mg/dL may indicate prediabetes.</div>
+            </div>
+            <div class="form-group">
+                <label for="hba1c">HbA1c (%)</label>
+                <input type="number" step="0.1" id="hba1c" name="hba1c" required 
+                       onmouseover="showPopup(this)" onmouseout="hidePopup(this)">
+                <div class="popup">HbA1c represents average blood glucose levels over the past 2-3 months. Values above 6.5% indicate diabetes.</div>
+            </div>
+            <div class="form-group">
+                <label for="insulinResistance">Insulin Resistance Index</label>
+                <input type="number" step="0.1" id="insulinResistance" name="insulinResistance" required 
+                       onmouseover="showPopup(this)" onmouseout="hidePopup(this)">
+                <div class="popup">The insulin resistance index quantifies insulin sensitivity, where higher values indicate reduced efficiency.</div>
+            </div>
+            <button type="button" onclick="calculateRisk()">Calculate Risk Score</button>
+        </form>
+        <div class="result" id="result"></div>
+        <div class="meal-plan" id="riskInfo"></div>
+
+<h2>BGL Correction & Meal Calculations</h2>
+<form id="mealCalcForm">
+    <div class="form-group">
+        <label for="correction">BGL Correction</label>
+        <input type="text" id="correction" placeholder="BGL Correction" required>
+        <div class="popup">Correction factor shows how much insulin lowers blood glucose.</div>
+    </div>
+    <div class="form-group">
+        <label for="target">BGL Target</label>
+        <input type="text" id="target" placeholder="BGL Target" required>
+        <div class="popup">Target blood glucose level is the desired range for stable glucose levels.</div>
+    </div>
+    <div class="form-group">
+        <label for="bg">BG Reading</label>
+        <input type="text" id="bg" placeholder="BG Reading" required>
+        <div class="popup">Current blood glucose reading is critical for accurate calculation.</div>
+    </div>
+    <div class="form-group">
+        <label for="carbs">Carb Target</label>
+        <input type="text" id="carbs" placeholder="Carbs Target" required>
+        <div class="popup">Carb intake directly affects blood glucose levels.</div>
+    </div>
+    <div class="form-group">
+        <label for="carbratio">Carb Ratio</label>
+        <input type="text" id="carbratio" placeholder="Carb Ratio" required>
+        <div class="popup">Carb ratio determines how many grams of carbs 1 unit of insulin covers.</div>
+    </div>
+    <button type="button" onclick="calc()">Calculate</button>
+</form>
+
+<table>
+    <tr>
+        <th>BG Reading</th>
+        <th>BGL Correction</th>
+        <th>Carb Correction</th>
+        <th>Units of Insulin</th>
+    </tr>
+    <tr>
+        <td id="result-bg"></td>
+        <td id="result-correction"></td>
+        <td id="result-carb"></td>
+        <td id="result-units"></td>
+    </tr>
+</table>
+    </div>
+
+    <script>
+        function showPopup(element) {
+            const popup = element.nextElementSibling;
+            if (popup && popup.classList.contains('popup')) {
+                popup.style.display = 'block';
+            }
+        }
+
+        function hidePopup(element) {
+            const popup = element.nextElementSibling;
+            if (popup && popup.classList.contains('popup')) {
+                popup.style.display = 'none';
+            }
+        }
+
+        function calculateRisk() {
+            const age = parseFloat(document.getElementById('age').value);
+            const bmi = parseFloat(document.getElementById('bmi').value);
+            const fastingGlucose = parseFloat(document.getElementById('fastingGlucose').value);
+            const hba1c = parseFloat(document.getElementById('hba1c').value);
+            const insulinResistance = parseFloat(document.getElementById('insulinResistance').value);
+
+            if (isNaN(age) || isNaN(bmi) || isNaN(fastingGlucose) || isNaN(hba1c) || isNaN(insulinResistance)) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            const riskScore = Math.min(1, Math.max(0,
+                0.15 * age +
+                0.20 * bmi +
+                0.25 * fastingGlucose +
+                0.10 * hba1c +
+                0.05 * insulinResistance
+            ));
+
+            document.getElementById('result').innerText = `Diabetic Risk Score: ${riskScore.toFixed(2)}`;
+            document.getElementById('riskInfo').innerText =
+                riskScore < 0.3 ? "Low Risk: Maintain healthy habits." :
+                riskScore < 0.6 ? "Moderate Risk: Consider lifestyle adjustments." :
+                "High Risk: Seek medical advice.";
+        }
+
+        function calc() {
+        const bg = parseFloat(document.getElementById('bg').value);
+        const carbs = parseFloat(document.getElementById('carbs').value);
+        const correction = parseFloat(document.getElementById('correction').value);
+        const target = parseFloat(document.getElementById('target').value);
+        const carbratio = parseFloat(document.getElementById('carbratio').value);
+
+        if (isNaN(bg) || isNaN(carbs) || isNaN(correction) || isNaN(target) || isNaN(carbratio)) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        // Calculate the corrections
+        const bgCorrection = bg > target ? (bg - target) / correction : 0;
+        const carbCorrection = carbs / carbratio;
+        const totalUnits = bgCorrection + carbCorrection;
+
+        // Display the results in the table
+        document.getElementById('result-bg').innerText = bg.toFixed(2);
+        document.getElementById('result-correction').innerText = bgCorrection.toFixed(2);
+        document.getElementById('result-carb').innerText = carbCorrection.toFixed(2);
+        document.getElementById('result-units').innerText = totalUnits.toFixed(2);
+    }
+
+    </script>
+</body>
+</html>
