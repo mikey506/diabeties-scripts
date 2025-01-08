@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combined Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            background-color: #eaeaea;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #eaeaea;
+            border: 1px solid #ccc;
+            border-bottom: none;
+        }
+        .tab.active {
+            background-color: #fff;
+            font-weight: bold;
+        }
+        .content {
+            border: 1px solid #ccc;
+            padding: 20px;
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, button, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs">
+        <div class="tab active" data-tab="tab1">Diabetic Management Tool</div>
+        <div class="tab" data-tab="tab2">BGL Correction & Meal Calculations</div>
+    </div>
+<div class="content active" id="tab1">
+    <div class="container">
+        <h1>Diabetic Management Tool</h1>
+
+        <!-- Risk Score Calculator -->
+        <h2>Diabetic Risk Score Calculator</h2>
+        <form id="diabeticForm">
+            <!-- Input Fields with Explanations -->
+            <div class="form-group">
+                <label for="age">Age (years)</label>
+                <input type="number" id="age" name="age" required>
+                <div class="helper-text">Your age is a key factor in assessing diabetes risk. Risk tends to increase with age.</div>
+            </div>
+            <div class="form-group">
+                <label for="bmi">BMI</label>
+                <input type="number" id="bmi" name="bmi" required>
+                <div class="helper-text">Body Mass Index (BMI) measures body fat based on height and weight. Higher BMI often correlates with higher risk.</div>
+            </div>
+            <div class="form-group">
+                <label for="fastingGlucose">Fasting Glucose (mg/dL)</label>
+                <input type="number" id="fastingGlucose" name="fastingGlucose" required>
+                <div class="helper-text">Fasting glucose measures sugar in your blood after fasting. High levels may indicate diabetes or prediabetes.</div>
+            </div>
+            <div class="form-group">
+                <label for="hba1c">HbA1c (%)</label>
+                <input type="number" step="0.1" id="hba1c" name="hba1c" required>
+                <div class="helper-text">HbA1c reflects your average blood sugar levels over the past three months.</div>
+            </div>
+            <div class="form-group">
+                <label for="cholesterol">Cholesterol (mg/dL)</label>
+                <input type="number" id="cholesterol" name="cholesterol" required>
+                <div class="helper-text">Cholesterol levels affect heart health and may indicate metabolic disorders associated with diabetes.</div>
+            </div>
+            <div class="form-group">
+                <label for="triglycerides">Triglycerides (mg/dL)</label>
+                <input type="number" id="triglycerides" name="triglycerides" required>
+                <div class="helper-text">Triglycerides are a type of fat in your blood. High levels are often linked to insulin resistance.</div>
+            </div>
+            <div class="form-group">
+                <label for="hdl">HDL (mg/dL)</label>
+                <input type="number" id="hdl" name="hdl" required>
+                <div class="helper-text">High-Density Lipoprotein (HDL) is "good cholesterol" that helps reduce the risk of heart disease.</div>
+            </div>
+            <div class="form-group">
+                <label for="ldl">LDL (mg/dL)</label>
+                <input type="number" id="ldl" name="ldl" required>
+                <div class="helper-text">Low-Density Lipoprotein (LDL) is "bad cholesterol." High levels can lead to cardiovascular issues.</div>
+            </div>
+            <div class="form-group">
+                <label for="systolicBP">Systolic Blood Pressure (mmHg)</label>
+                <input type="number" id="systolicBP" name="systolicBP" required>
+                <div class="helper-text">Systolic pressure measures the force of blood against artery walls when your heart beats.</div>
+            </div>
+            <div class="form-group">
+                <label for="diastolicBP">Diastolic Blood Pressure (mmHg)</label>
+                <input type="number" id="diastolicBP" name="diastolicBP" required>
+                <div class="helper-text">Diastolic pressure measures blood pressure between heartbeats when the heart is at rest.</div>
+            </div>
+            <div class="form-group">
+                <label for="familyHistory">Family History (Yes=1, No=0)</label>
+                <input type="number" id="familyHistory" name="familyHistory" min="0" max="1" required>
+                <div class="helper-text">Indicate if close family members (parents, siblings) have been diagnosed with diabetes.</div>
+            </div>
+            <button type="button" onclick="calculateRisk()">Calculate Risk Score</button>
+        </form>
+        <div class="result" id="result"></div>
+
+        <!-- Insulin Table -->
+        <h2>Insulin Types</h2>
+        <button id="showTableButton">Show Insulin Types</button>
+        <table id="insulinTable">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Onset (minutes)</th>
+                    <th>Peak (hours)</th>
+                    <th>Duration (hours)</th>
+                </tr>
+            </thead>
+            <tbody id="insulinTableBody"></tbody>
+        </table>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h2>Tips & Tricks for Parents</h2>
+            <button id="tipsButton">Show Tips</button>
+            <div id="tips" style="display: none;">
+                <ul>
+                    <li>Keep track of your child’s blood glucose levels daily.</li>
+                    <li>Prepare balanced meals with consistent carbohydrate portions.</li>
+                    <li>Encourage regular physical activity appropriate for their age.</li>
+                    <li>Have emergency snacks ready in case of hypoglycemia.</li>
+                    <li>Stay in touch with your healthcare provider for regular updates.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+  <div class="content" id="tab2">
+    <div class="container">
+        <h1>BGL Correction & Meal Calculations</h1>
+        <h2>Manage Your Insulin & Carb Intake</h2>
+
+        <form id="mealCalcForm">
+            <div class="form-group">
+                <label for="mealType">Meal Type</label>
+                <select id="mealType" onchange="loadPreset()">
+                    <option value="default">Select Meal Type</option>
+                    <option value="morning">Morning</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="supper">Supper</option>
+                    <option value="snack">Snack</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="correction">BGL Correction</label>
+                <input type="text" id="correction" placeholder="Enter BGL Correction Factor" required>
+            </div>
+            <div class="form-group">
+                <label for="target">BGL Target</label>
+                <input type="text" id="target" placeholder="Enter BGL Target" required>
+            </div>
+            <div class="form-group">
+                <label for="carbratio">Carb Ratio</label>
+                <input type="text" id="carbratio" placeholder="Enter Carb Ratio" required>
+            </div>
+            <div class="form-group">
+                <label for="bg">BG Reading</label>
+                <input type="text" id="bg" placeholder="Enter BG Reading" required>
+            </div>
+            <div class="form-group">
+                <label for="carbs">Carb Target</label>
+                <input type="text" id="carbs" placeholder="Enter Carb Target" required>
+            </div>
+            <div class="form-group">
+                <label for="mealNotes">Meal Notes</label>
+                <textarea id="mealNotes" placeholder="Enter any notes or settings for this meal type"></textarea>
+            </div>
+            <button type="button" onclick="saveSettings()">Save Settings</button>
+            <button type="button" onclick="calc()">Calculate</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>BG Reading</th>
+                <th>BGL Correction</th>
+                <th>Carb Correction</th>
+                <th>Units of Insulin</th>
+            </tr>
+            <tr>
+                <td id="result-bg"></td>
+                <td id="result-correction"></td>
+                <td id="result-carb"></td>
+                <td id="result-units"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.content');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        function calculateRisk() {
+            const age = parseFloat(document.getElementById('age').value);
+            const bmi = parseFloat(document.getElementById('bmi').value);
+            const fastingGlucose = parseFloat(document.getElementById('fastingGlucose').value);
+            const hba1c = parseFloat(document.getElementById('hba1c').value);
+            const cholesterol = parseFloat(document.getElementById('cholesterol').value);
+
+            const riskScore = 0.1 * age + 0.15 * bmi + 0.2 * fastingGlucose + 0.2 * hba1c + 0.1 * cholesterol;
+            document.getElementById('result').textContent = `Diabetic Risk Score: ${riskScore.toFixed(2)}`;
+        }
+
+    // Load retained variables on page load
+    window.onload = function () {
+        const mealType = document.getElementById('mealType').value;
+        loadSettings(mealType);
+    };
+
+    const presets = {
+        morning: { correction: '50', target: '100', carbratio: '10', carbs: '40', notes: '' },
+        lunch: { correction: '40', target: '120', carbratio: '12', carbs: '50', notes: '' },
+        supper: { correction: '35', target: '110', carbratio: '15', carbs: '60', notes: '' },
+        snack: { correction: '60', target: '90', carbratio: '8', carbs: '20', notes: '' },
+    };
+
+    // Load preset or saved settings
+    function loadPreset() {
+        const mealType = document.getElementById('mealType').value;
+        loadSettings(mealType);
+    }
+
+    function loadSettings(mealType) {
+        if (mealType === 'default') return;
+        const savedSettings = JSON.parse(localStorage.getItem(mealType)) || presets[mealType];
+        document.getElementById('correction').value = savedSettings.correction;
+        document.getElementById('target').value = savedSettings.target;
+        document.getElementById('carbratio').value = savedSettings.carbratio;
+        document.getElementById('carbs').value = savedSettings.carbs || '';
+        document.getElementById('mealNotes').value = savedSettings.notes || '';
+    }
+
+    // Save settings for the selected meal type
+    function saveSettings() {
+        const mealType = document.getElementById('mealType').value;
+        if (mealType === 'default') {
+            alert('Please select a meal type before saving settings.');
+            return;
+        }
+
+        const settings = {
+            correction: document.getElementById('correction').value,
+            target: document.getElementById('target').value,
+            carbratio: document.getElementById('carbratio').value,
+            carbs: document.getElementById('carbs').value,
+            notes: document.getElementById('mealNotes').value,
+        };
+
+        localStorage.setItem(mealType, JSON.stringify(settings));
+        alert(`Settings for ${mealType} saved successfully.`);
+    }
+
+    // Perform calculations
+    function calc() {
+        const bg = parseFloat(document.getElementById('bg').value);
+        const carbs = parseFloat(document.getElementById('carbs').value);
+        const correction = parseFloat(document.getElementById('correction').value);
+        const target = parseFloat(document.getElementById('target').value);
+        const carbratio = parseFloat(document.getElementById('carbratio').value);
+
+        if (isNaN(bg) || isNaN(carbs) || isNaN(correction) || isNaN(target) || isNaN(carbratio)) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        const bgCorrection = bg > target ? (bg - target) / correction : 0;
+        const carbCorrection = carbs / carbratio;
+        const totalUnits = bgCorrection + carbCorrection;
+
+        document.getElementById('result-bg').innerText = bg.toFixed(2);
+        document.getElementById('result-correction').innerText = bgCorrection.toFixed(2);
+        document.getElementById('result-carb').innerText = carbCorrection.toFixed(2);
+        document.getElementById('result-units').innerText = totalUnits.toFixed(2);
+    }
+
+   function calculateRisk() {
+        const age = parseFloat(document.getElementById('age').value);
+        const bmi = parseFloat(document.getElementById('bmi').value);
+        const fastingGlucose = parseFloat(document.getElementById('fastingGlucose').value);
+        const hba1c = parseFloat(document.getElementById('hba1c').value);
+        const cholesterol = parseFloat(document.getElementById('cholesterol').value);
+        const triglycerides = parseFloat(document.getElementById('triglycerides').value);
+        const hdl = parseFloat(document.getElementById('hdl').value);
+        const ldl = parseFloat(document.getElementById('ldl').value);
+        const systolicBP = parseFloat(document.getElementById('systolicBP').value);
+        const diastolicBP = parseFloat(document.getElementById('diastolicBP').value);
+        const familyHistory = parseFloat(document.getElementById('familyHistory').value);
+
+        const riskScore = 0.1 * age + 0.15 * bmi + 0.2 * fastingGlucose +
+                          0.2 * hba1c + 0.1 * cholesterol + 0.05 * triglycerides +
+                          0.1 * (hdl - ldl) + 0.05 * systolicBP + 0.05 * diastolicBP +
+                          0.2 * familyHistory;
+
+        document.getElementById('result').textContent = `Diabetic Risk Score: ${riskScore.toFixed(2)}`;
+    }
+
+    document.getElementById("showTableButton").addEventListener("click", function () {
+        const table = document.getElementById("insulinTable");
+        const tbody = document.getElementById("insulinTableBody");
+        const insulinData = [
+            { category: "Rapid-acting", type: "Aspart (NovoLog)", onset: 10, peak: 1, duration: 4 },
+            { category: "Rapid-acting", type: "Lispro (Humalog)", onset: 15, peak: 1, duration: 4 },
+            { category: "Rapid-acting", type: "Glulisine (Apidra)", onset: 15, peak: 1, duration: 5 },
+            { category: "Short-acting", type: "Regular (Humulin R, Novolin R)", onset: 30, peak: 2.5, duration: 8 },
+            { category: "Intermediate-acting", type: "NPH (Humulin N, Novolin N)", onset: 60, peak: 4, duration: 18 },
+            { category: "Long-acting", type: "Glargine (Lantus)", onset: 90, peak: "None", duration: 24 },
+            { category: "Long-acting", type: "Detemir (Levemir)", onset: 60, peak: 9, duration: 24 },
+            { category: "Ultra-long-acting", type: "Degludec (Tresiba)", onset: 30, peak: 12, duration: 42 }
+        ];
+
+        if (table.style.display === "none") {
+            tbody.innerHTML = insulinData.map(insulin => `
+                <tr>
+                    <td>${insulin.category}</td>
+                    <td>${insulin.type}</td>
+                    <td>${insulin.onset}</td>
+                    <td>${insulin.peak}</td>
+                    <td>${insulin.duration}</td>
+                </tr>`).join('');
+            table.style.display = "table";
+            this.textContent = "Hide Insulin Types";
+        } else {
+            table.style.display = "none";
+            this.textContent = "Show Insulin Types";
+        }
+    });
+
+    document.getElementById("tipsButton").addEventListener("click", function () {
+        const tips = document.getElementById("tips");
+        tips.style.display = tips.style.display === "none" ? "block" : "none";
+        this.textContent = tips.style.display === "block" ? "Hide Tips" : "Show Tips";
+    });
+    </script>
+</body>
+</html>
+
