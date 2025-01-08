@@ -1,119 +1,303 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
-<style>
-table, th, td {
-  border: 1px solid black;
-}
-</style>
-
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BGL Correction & Meal Calculations (ClientSide) </title>
-<script>
-function calc(){
-  var bg=document.getElementById('bg').value;
-  var carbs=document.getElementById('carbs').value;
-  var correction=document.getElementById('correction').value;
-  var target=document.getElementById('target').value;
-  var carbratio=document.getElementById('carbratio').value;
-  var mealinfostr=document.getElementById('mealinfo').value;
-
-// the 16 is correction factor and 10 is is BG target this can be changed as needed:
-// For adults 5-8 BGL is a good range to have blood sugar levels:
-// Change the range (10) and correction factor of (16) as needed
-// carbratio can be adjusted to suit needs.
-
-  var carbcorrect= carbs / carbratio;
-
-// This here is a feature that endo wanted, any BGL below 10 would leave that calculation out
-// when adding up the total amount for units. Without this correction would be negative which
-// we were told to avoid working with.
-
-var correct=((bg - target) / correction);
-
-// this if statement voids correction if below BG target.
-  if (bg < target) { 
-    var correct=0; 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BGL Correction & Meal Calculations</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
   }
 
-  var units= correct + carbcorrect;
-  var formulas= '(BG) - ' + target + ' / ' + correction + ' = _____ <br> (Carbs) / ' + carbratio + ' = _______ </b>';
-  document.getElementById('result').innerHTML=units;
-  document.getElementById('result2').innerHTML=correct;
-  document.getElementById('result3').innerHTML=carbcorrect;
-  document.getElementById('result4').innerHTML=mealinfostr;
-  document.getElementById('result5').innerHTML=bg;
-  document.getElementById('result6').innerHTML=formulas;
-  return false
+  h1 {
+    color: #007bff;
+  }
+
+  input[type="text"], textarea {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 300px;
+    margin: 10px auto;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  input[type="button"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px;
+    width: 150px;
+  }
+
+  input[type="button"]:hover {
+    background-color: #0056b3;
+  }
+
+  textarea {
+    height: 100px;
+    resize: none;
+  }
+
+  .form-container {
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 90%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .error {
+    border-color: red;
+  }
+
+  .btn-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 600px) {
+    input[type="text"], textarea, input[type="button"] {
+      width: 90%;
+    }
+
+    th, td {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+</style>
+<script>
+  const logKey = 'mealLog';
+  const settingsKey = 'appSettings';
+
+  function calc() {
+  // Retrieve input values
+  var bg = document.getElementById('bg').value;
+  var carbs = document.getElementById('carbs').value;
+  var correction = document.getElementById('correction').value;
+  var target = document.getElementById('target').value;
+  var carbratio = document.getElementById('carbratio').value;
+  var mealinfostr = document.getElementById('mealinfo').value;
+
+  // Debug: Log the input values
+  console.log("BG Input:", bg);
+  console.log("Carbs Input:", carbs);
+
+  // Convert values to floats for calculation
+  bg = parseFloat(bg);
+  carbs = parseFloat(carbs);
+  correction = parseFloat(correction);
+  target = parseFloat(target);
+  carbratio = parseFloat(carbratio);
+
+  // Handle invalid inputs
+  if (isNaN(bg) || isNaN(carbs) || isNaN(correction) || isNaN(target) || isNaN(carbratio)) {
+    alert("Please ensure all input fields are filled with valid numeric values.");
+    return;
+  }
+
+  // Debug: Log parsed values
+  console.log("Parsed BG:", bg);
+
+  // Perform calculations
+  var carbcorrect = carbs / carbratio;
+  var correct = (bg - target) / correction;
+
+  // Void correction if BG is below the target
+  if (bg < target) {
+    correct = 0;
+  }
+
+  var units = correct + carbcorrect;
+
+  // Prepare formula display
+  var formulas =
+    "(BG - " +
+    target +
+    ") / " +
+    correction +
+    " = _____ <br> (Carbs / " +
+    carbratio +
+    ") = _______";
+
+  // Update results in the HTML
+  document.getElementById('result').innerHTML = units.toFixed(2);
+  document.getElementById('result2').innerHTML = correct.toFixed(2);
+  document.getElementById('result3').innerHTML = carbcorrect.toFixed(2);
+  document.getElementById('result4').innerHTML = mealinfostr;
+  document.getElementById('result5').innerHTML = bg.toFixed(2); // Explicitly set BG Reading
+  document.getElementById('result6').innerHTML = formulas;
+
+  // Debug: Confirm the result5 update
+  console.log("Result5 (BG Reading):", bg.toFixed(2));
 }
+
+
+  function highlightErrors(fields) {
+    fields.forEach(field => {
+      if (field === "") {
+        document.getElementById(field).classList.add('error');
+      }
+    });
+  }
+
+  function resetErrorHighlights() {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => input.classList.remove('error'));
+  }
+
+  function saveSettings() {
+    const settings = {
+      correction: document.getElementById('correction').value,
+      target: document.getElementById('target').value,
+      carbratio: document.getElementById('carbratio').value
+    };
+    localStorage.setItem(settingsKey, JSON.stringify(settings));
+    alert('Settings saved!');
+  }
+
+  function loadSettings() {
+    const settings = JSON.parse(localStorage.getItem(settingsKey));
+    if (settings) {
+      document.getElementById('correction').value = settings.correction;
+      document.getElementById('target').value = settings.target;
+      document.getElementById('carbratio').value = settings.carbratio;
+    }
+    displayMealLog();
+  }
+
+  function logMeal(bg, carbs, correction, carbcorrect, units, mealinfo) {
+    const mealLog = JSON.parse(localStorage.getItem(logKey)) || [];
+    const newLog = {
+      bg,
+      carbs,
+      correction: correction.toFixed(2),
+      carbcorrect: carbcorrect.toFixed(2),
+      units: units.toFixed(2),
+      mealinfo,
+      timestamp: new Date().toISOString()
+    };
+    mealLog.push(newLog);
+    localStorage.setItem(logKey, JSON.stringify(mealLog));
+    displayMealLog();
+  }
+
+  function displayMealLog() {
+    const mealLog = JSON.parse(localStorage.getItem(logKey)) || [];
+    const logTable = document.getElementById('mealLogTable');
+    logTable.innerHTML = '';
+
+    mealLog.forEach(log => {
+      const row = `
+        <tr>
+          <td>${log.timestamp}</td>
+          <td>${log.bg}</td>
+          <td>${log.carbs}</td>
+          <td>${log.correction}</td>
+          <td>${log.carbcorrect}</td>
+          <td>${log.units}</td>
+          <td>${log.mealinfo}</td>
+        </tr>
+      `;
+      logTable.innerHTML += row;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSettings);
 </script>
 </head>
-<body><center><br><br>
-<form>
-<input type="hidden" name="output" value="">
-<p>BGL Correct  <input type="text" id="correction" value="16" size="2"><br>
-BGL Target <input type="text" id="target" value="10" size="2"><br>
-Carb Ratio <input type="text" id="carbratio" value="17" size="2"><br><br>
-BG Reading <input type="text" id="bg" size="2"/><br>
-Carb Target <input type="text" id="carbs" size="2"/><br><br><br>
-
-<script>
-function GetSelectedValue(){
-  var e = document.getElementById("country");
-  var result = e.options[e.selectedIndex].value;
-  document.getElementById("result").innerHTML = result;
-}
-function GetSelectedText(){
-  varr e = document.getElementById("country");
-  var result = e.options[e.selectedIndex].text;				
-  document.getElementById("result").innerHTML = result;
-}
-  function addText(event) {
-  var targ = event.target || event.srcElement;
-  document.getElementById("mealinfo").value += targ.textContent || targ.innerText;
-}
-</script>
-
-<br><br><b>--==Meal/Correction Info==--</b><br> 
-<textarea rows = "8" cols = "60" id="mealinfo" name = "description"></textarea><br></p>
-<br></p>
-</form>
-
-<form>
-
-<input type="hidden" name="total" id="total">
-<input type="button" onClick="calc()" onClick="addBreak(el)" value="Calculate" />
-
-</form>
- <table style="width:70%">
-  <tr>
-    <th>BG Reading</th>
-    <th>BGL Correction</th>
-    <th>Carb Correction</th>
-    <th>Units of insulin</th>
-  </tr>
-  <tr>
-    <td><center><b> <div id="result5"></div> </b></center></td>
-    <td><center><b> <div id="result2"></div> </b></center></td>
-    <td><center><b> <div id="result3"></div></b></center></td>
-    <td><center><b> <div id="result"></div></b></center></td>
-  </center></tr>
-</table> 
-<table style="width:70%">
- <tr>
-   <th>--==Formula Info==--<br> <b></th>
- </tr>
-<tr><td>
- <center><div id="result6"></div></b></center></td>
- </tr>
-</table>
-<table><tr>
-  <th></b> --==Meal/Correction Info==-- </th>
-</tr>
-<tr><td><center> <div id="result4"></div></center></td></tr>
-</table>
-
-
+<body>
+  <h1>BGL Correction & Meal Calculations</h1>
+  <div class="form-container">
+    <form>
+      <input type="text" id="correction" placeholder="BGL Correction (e.g., 16)" />
+      <input type="text" id="target" placeholder="BGL Target (e.g., 10)" />
+      <input type="text" id="carbratio" placeholder="Carb Ratio (e.g., 15)" />
+      <input type="text" id="bg" placeholder="BG Reading" />
+      <input type="text" id="carbs" placeholder="Carb Target" />
+      <textarea id="mealinfo" placeholder="Meal/Correction Info"></textarea>
+      <div class="btn-container">
+        <input type="button" onClick="calc()" value="Calculate" />
+        <input type="button" onClick="saveSettings()" value="Save Settings" />
+      </div>
+    </form>
+  </div>
+  <table>
+    <tr>
+      <th>BG Reading</th>
+      <th>BGL Correction</th>
+      <th>Carb Correction</th>
+      <th>Units of Insulin</th>
+    </tr>
+    <tr>
+      <td><div id="result5"></div></td>
+      <td><div id="result2"></div></td>
+      <td><div id="result3"></div></td>
+      <td><div id="result"></div></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <th>Formula Info</th>
+    </tr>
+    <tr>
+      <td><div id="result6"></div></td>
+    </tr>
+  </table>
+  <h2>Meal Log</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>BG</th>
+        <th>Carbs</th>
+        <th>BGL Correction</th>
+        <th>Carb Correction</th>
+        <th>Units</th>
+        <th>Meal Info</th>
+      </tr>
+    </thead>
+    <tbody id="mealLogTable"></tbody>
+  </table>
 </body>
 </html>
